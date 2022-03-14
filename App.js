@@ -1,7 +1,10 @@
 import AppNavigator from './src/navigation/AppNavigator';
+import { NativeBaseProvider } from "native-base"
 
 export default function App() {
   return (
-    <AppNavigator />
+    <NativeBaseProvider>
+      <AppNavigator />
+    </NativeBaseProvider>
   );
 }

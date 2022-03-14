@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import { Button as NativeButton } from "native-base";
 
 const styles = StyleSheet.create({
   slide: {
@@ -8,10 +9,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',    
   },
-  image: {
-    width: 320,
-    height: 320,
-    marginVertical: 32,
+  image: {    
+    marginBottom: 20,
   },
   text: {
     color: '#606060',
@@ -22,7 +21,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#3DAC33',
     textAlign: 'center',
+    marginBottom: 20,
   },
+});
+
+const loginStyles = StyleSheet.create({
+  view: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+  text: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  button: {
+    backgroundColor: "#3DAC33",
+    height: 50,
+    width: 230,
+    marginBottom: 10
+  },
+  link: {
+    color: "#3DAC33"
+  }
 });
 
 const slides = [
@@ -46,7 +67,7 @@ export default function SliderScreen({ navigation }) {
   function RenderItem({ item }) {    
     return (
       <View style={styles.slide}>
-        <Image source={item.image} />
+        <Image source={item.image} style={styles.image} />
         <Text style={styles.title}>doe.edu</Text>
         <Text style={styles.text}>{item.text}</Text>
       </View>
@@ -55,8 +76,23 @@ export default function SliderScreen({ navigation }) {
 
   if(showApp) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Real app</Text>
+      <View style={loginStyles.view}>
+        <Image source={require('../../../assets/slide3.png')}/>
+        <Text style={styles.title}>doe.edu</Text>
+        <NativeButton
+          style={loginStyles.button}           
+          size="lg"
+          borderRadius="50"
+          onPress={() => navigation.navigate('Login')}          
+        >
+          <Text style={loginStyles.text}>
+            Entrar
+          </Text>
+        </NativeButton>
+        <Text>
+          Não possui conta? 
+          <Text style={loginStyles.link}>Cadastre-se aqui</Text>
+        </Text>
       </View>
     );
   }

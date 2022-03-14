@@ -2,6 +2,7 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import LoginScreen from '../screens/Login'
 import SliderScreen from '../screens/Slider'
 
 function AddUser() {
@@ -18,10 +19,11 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
-        headerShown: false
-      }}
-    >
+          headerShown: false
+        }}
+      >        
         <Stack.Screen name="Home" component={SliderScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AddUser" component={AddUser} />
       </Stack.Navigator>
     </NavigationContainer>
