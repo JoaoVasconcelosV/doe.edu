@@ -1,54 +1,43 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native';
-import { Input, Button } from "native-base";
+import { StyleSheet, Text, Image } from 'react-native';
+import { Input, Button } from 'native-base';
+import {
+  Wrapper,
+  Title,
+  Subtitle,
+  Container
+} from './styles.js'
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center'
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    marginBottom: 10
-  },
-  span: {
-    fontSize: 16,
-    marginBottom: 30
-  },
-  container: {
-    width: 250,
-    marginTop: 30,
-    marginBottom: 30,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
   button: {
-    width: 120,    
+    flex: 1, 
   }  
 })
 
 export default function Login({ navigation }) {
   return(
-    <View style={styles.wrapper}>
+    <Wrapper>
       <Image 
         source={require('../../../assets/logoIFCE.png')}
       />
-      <Text style={styles.title}>Doe.edu</Text>
-      <Text style={styles.span}>Faça sua doação para ajudar a educação</Text>
+      <Title>Doe.edu</Title>
+      <Subtitle>Faça sua doação para ajudar a educação</Subtitle>
       <Input variant="underlined" placeholder="Email" w="70%" />
       <Input variant="underlined" placeholder="Senha" w="70%" />
-      <View style={styles.container}>
-        <Button style={{ ...styles.button, backgroundColor: '#000'}}>
+      <Container>
+        <Button 
+          style={{ ...styles.button, backgroundColor: '#000', marginRight: 5}}
+        >
           <Text style={{ color: '#fff' }}>Entrar</Text>
         </Button>
-        <Button variant="outline" style={{ ...styles.button, borderColor: '#000' }}>
+        <Button 
+          variant="outline" 
+          style={{ ...styles.button, borderColor: '#000', marginLeft: 5 }}
+        >
           <Text style={{ color: '#000' }}>Cadastrar</Text>
         </Button>
-      </View>
-      <Text>Esqueceu a senha?</Text>
-    </View>
+      </Container>
+      {/* <Text>Esqueceu a senha?</Text> SE POSSIVEL*/}
+    </Wrapper>
   )
 }
