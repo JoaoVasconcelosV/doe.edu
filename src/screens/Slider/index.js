@@ -83,7 +83,7 @@ export default function SliderScreen({ navigation }) {
           style={loginStyles.button}           
           size="lg"
           borderRadius="50"
-          onPress={() => navigation.navigate('Login')}          
+          onPress={() => navigation.navigate('Login')}
         >
           <Text style={loginStyles.text}>
             Entrar
