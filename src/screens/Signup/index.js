@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, Text, Image, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, Image } from 'react-native';
 import { Input, Button } from 'native-base';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import {
   Wrapper,
   Title,
   Subtitle,
   Container
 } from './styles.js'
+import { collection, getDocs } from 'firebase/firestore/lite';
+import db from '../../Config/firebase';
 
 const styles = StyleSheet.create({
   button: {
@@ -16,8 +18,20 @@ const styles = StyleSheet.create({
 })
 
 export default function Signup({ navigation }) {
+  const [data, setData] = useState([]);
   const { register, setValue, handleSubmit } = useForm();
   const onSubmit = data => console.warn(data);
+
+  useEffect(() => {
+    (async function teste() {
+      const citiesCol = collection(db, 'test');
+      const citySnapshot = await getDocs(citiesCol);
+      const cityList = citySnapshot.docs.map(doc => doc.data());
+      setData(cityList);
+    }())        
+  }, [])
+
+  console.warn(data);
 
   useEffect(() => {
     register("name");
@@ -65,7 +79,7 @@ export default function Signup({ navigation }) {
           <Text style={{ color: '#fff' }}>Entrar</Text>
         </Button>
         <Button 
-          
+          variant="outline"
           onPress={handleSubmit(onSubmit)}
           style={{ ...styles.button, borderColor: '#000', marginLeft: 5 }}
         >
