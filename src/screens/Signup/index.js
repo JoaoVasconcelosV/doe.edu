@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, Image } from 'react-native';
+import { StyleSheet, Text, Image, Alert } from 'react-native';
 import { Input, Button } from 'native-base';
 import { useForm } from 'react-hook-form';
 import {
@@ -8,7 +8,7 @@ import {
   Subtitle,
   Container
 } from './styles.js'
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import db from '../../Config/firebase';
 
 const styles = StyleSheet.create({
@@ -18,24 +18,24 @@ const styles = StyleSheet.create({
 })
 
 export default function Signup({ navigation }) {
-  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { register, setValue, handleSubmit } = useForm();
-  const onSubmit = data => console.warn(data);
+  const onSubmit = data => signUp(data);
 
-  useEffect(() => {
-    (async function teste() {
-      const citiesCol = collection(db, 'test');
-      const citySnapshot = await getDocs(citiesCol);
-      const cityList = citySnapshot.docs.map(doc => doc.data());
-      setData(cityList);
-    }())        
-  }, [])
+  function signUp(data) {
+    setIsLoading(true);
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(() => {
+        Alert.alert("Conta", "Cadastrado com sucesso!");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setIsLoading(false));
+  }
 
-  console.warn(data);
-
-  useEffect(() => {
-    register("name");
-    register("phone");
+  useEffect(() => {    
     register("email");
     register("password");
   }, [register])
@@ -47,18 +47,6 @@ export default function Signup({ navigation }) {
       />
       <Title>Doe.edu</Title>
       <Subtitle>Faça seu cadastro para adicionar sua necessidade</Subtitle>
-      <Input         
-        onChangeText={text => setValue('name', text)}
-        variant="underlined" 
-        placeholder="Nome" 
-        w="70%" 
-      />
-      <Input 
-        onChangeText={text => setValue('phone', text)}
-        variant="underlined" 
-        placeholder="Celular" 
-        w="70%" 
-      />
       <Input 
         onChangeText={text => setValue('email', text)}
         variant="underlined" 
@@ -72,18 +60,19 @@ export default function Signup({ navigation }) {
         w="70%" 
       />
       <Container>
-        <Button 
-          style={{ ...styles.button, backgroundColor: '#000000', marginRight: 5}}
+        <Button
+          variant="outline"
+          style={{ ...styles.button, borderColor: '#000', marginRight: 5}}
           onPress={() => navigation.goBack()}
         >
-          <Text style={{ color: '#fff' }}>Entrar</Text>
+          <Text style={{ color: '#000' }}>Entrar</Text>
         </Button>
-        <Button 
-          variant="outline"
+        <Button
+          isLoading={isLoading}
           onPress={handleSubmit(onSubmit)}
-          style={{ ...styles.button, borderColor: '#000', marginLeft: 5 }}
+          style={{ ...styles.button, backgroundColor: '#000000', marginLeft: 5 }}
         >
-          <Text style={{ color: '#000' }}>
+          <Text style={{ color: '#fff' }}>
             Cadastrar
           </Text>
         </Button>
