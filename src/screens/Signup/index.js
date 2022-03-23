@@ -9,7 +9,6 @@ import {
   Container
 } from './styles.js'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import db from '../../Config/firebase';
 
 const styles = StyleSheet.create({
   button: {

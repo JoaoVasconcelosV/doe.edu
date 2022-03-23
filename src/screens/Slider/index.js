@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import { Button as NativeButton } from "native-base";
+import { Button as NativeButton } from 'native-base';
 
 const styles = StyleSheet.create({
   slide: {

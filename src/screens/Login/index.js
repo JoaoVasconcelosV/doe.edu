@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, Image } from 'react-native';
 import { Input, Button } from 'native-base';
 import {
@@ -7,6 +7,8 @@ import {
   Subtitle,
   Container
 } from './styles.js'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useForm, Controller } from 'react-hook-form';
 
 const styles = StyleSheet.create({
   button: {
@@ -15,6 +17,23 @@ const styles = StyleSheet.create({
 })
 
 export default function Login({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const { control, handleSubmit } = useForm();
+  const onSubmit = data => login(data);
+
+  function login(data) {
+    setIsLoading(true);
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then(() => {
+        Alert.alert("Conta", "Cadastrado com sucesso!");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setIsLoading(false));
+  }
+
   return(
     <Wrapper>
       <Image 
@@ -22,10 +41,36 @@ export default function Login({ navigation }) {
       />
       <Title>Doe.edu</Title>
       <Subtitle>Faça sua doação para ajudar a educação</Subtitle>
-      <Input variant="underlined" placeholder="Email" w="70%" />
-      <Input variant="underlined" placeholder="Senha" w="70%" />
+      <Controller 
+        control={control}
+        render={({field: { onChange, onBlur }}) => (
+          <Input
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            variant="underlined" 
+            placeholder="Email" w="70%" 
+          />
+        )}
+        name="email"
+        rules={{ required: true }}
+      />
+      <Controller 
+        control={control}
+        render={({field: { onChange, onBlur }}) => (
+          <Input
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            variant="underlined" 
+            placeholder="Senha" w="70%" 
+          />
+        )}
+        name="password"
+        rules={{ required: true }}
+      />      
       <Container>
-        <Button 
+        <Button
+          isLoading={isLoading}
+          onPress={handleSubmit(onSubmit)}
           style={{ ...styles.button, backgroundColor: '#000', marginRight: 5}}
         >
           <Text style={{ color: '#fff' }}>Entrar</Text>
