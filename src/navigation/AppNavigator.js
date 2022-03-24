@@ -3,6 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getAuth } from "firebase/auth";
 
+//START FIREBASE
+import db from '../Config/firebase'
+
 //AuthRoutes
 import LoginScreen from '../screens/Login'
 import SliderScreen from '../screens/Slider'
@@ -17,7 +20,7 @@ export default function AppNavigator() {
   const [user, setUser] = useState(false);
 
   useEffect(() => {
-    const subscriber = getAuth().onAuthStateChanged(setUser);    
+    const subscriber = getAuth().onAuthStateChanged(setUser);
   }, [])
 
   return (
