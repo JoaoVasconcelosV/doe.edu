@@ -60,7 +60,8 @@ export default function Login({ navigation }) {
           <Input
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
-            variant="underlined" 
+            variant="underlined"
+            type="password"
             placeholder="Senha" w="70%" 
           />
         )}
