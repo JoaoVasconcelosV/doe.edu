@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#3DAC33',
+    color: '#22B07E',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -36,13 +36,13 @@ const loginStyles = StyleSheet.create({
     fontSize: 14,
   },
   button: {
-    backgroundColor: "#3DAC33",
+    backgroundColor: "#22B07E",
     height: 50,
     width: 230,
     marginBottom: 10
   },
   link: {
-    color: "#3DAC33"
+    color: "#22B07E"
   }
 });
 
@@ -102,9 +102,9 @@ export default function SliderScreen({ navigation }) {
       renderItem={RenderItem} 
       data={slides}        
       showNextButton={false}
-      renderDoneButton={() => <Button color="#3DAC33" onPress={() => setShowApp(true)} title='Concluir'/>}    
+      renderDoneButton={() => <Button color="#22B07E" onPress={() => setShowApp(true)} title='Concluir'/>}    
       dotStyle={{ backgroundColor: '#C4C4C4' }} 
-      activeDotStyle={{ backgroundColor: '#3DAC33' }}
+      activeDotStyle={{ backgroundColor: '#22B07E' }}
     />
   );
 }

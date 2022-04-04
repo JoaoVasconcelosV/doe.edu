@@ -5,6 +5,14 @@ export const Wrapper = styled.View`
   background-color: #ECECEC;  
 `
 
-export const Container = styled.View`
+export const Container = styled.View`  
+  flex: 1;
   margin: 0 20px;  
+`
+
+export const NoCampaign = styled.View`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
 `

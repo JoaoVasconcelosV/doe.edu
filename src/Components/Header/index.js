@@ -1,5 +1,7 @@
 import React from 'react';
+import { getAuth } from "firebase/auth";
 
+import { Text } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
 import { Menu, Pressable } from 'native-base';
 import {
@@ -7,10 +9,14 @@ import {
   Title
 } from './styles'
 
-export default function Header() {
+export default function Header(props) {
+  function logout() {
+    getAuth().signOut();
+  }
+
   return(
     <Wrapper>
-      <Title>Doe.edu</Title>      
+      <Title style={{ color: props.font }}>Doe.edu</Title>      
       {/* <Menu w="190" onOpen={() => console.log("opened")} trigger={triggerProps => {        
         return (
           <Pressable accessibilityLabel="More options menu" {...triggerProps}>
@@ -27,7 +33,7 @@ export default function Header() {
         <Menu.Item isDisabled>Sofia</Menu.Item>
         <Menu.Item>Cookie</Menu.Item>
       </Menu> */}
-      <EvilIcons name="gear" size={40} color="black" />
+      <Text style={{ color: props.font }} onPress={logout}>Sair</Text>
     </Wrapper>    
   )
 }

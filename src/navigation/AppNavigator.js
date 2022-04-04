@@ -12,7 +12,8 @@ import SliderScreen from '../screens/Slider'
 import SignupScreen from '../screens/Signup'
 
 //protectedRoutes
-import Home from '../screens/Home'
+import HomeScreen from '../screens/Home'
+import RegisterScreen from '../screens/Register'
 
 const Stack = createNativeStackNavigator();
 
@@ -30,14 +31,17 @@ export default function AppNavigator() {
         }}
       >
         { user 
-        ? 
-          <Stack.Screen name="Home" component={Home} /> 
+        ?
+          <>
+            <Stack.Screen name="Home" component={HomeScreen} />          
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </>
         : 
-        <>
-          <Stack.Screen name="Home" component={SliderScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />        
-        </>
+          <>
+            <Stack.Screen name="Home" component={SliderScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />        
+          </>
         }
       </Stack.Navigator>
     </NavigationContainer>

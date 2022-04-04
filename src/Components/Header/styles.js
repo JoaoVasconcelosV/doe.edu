@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
-  margin-top: 10px;
+  margin: 10px 0;
   width: 100%;
   padding: 0 20px;
 
@@ -9,11 +9,10 @@ export const Wrapper = styled.View`
   justify-content: space-between;
   flex-direction: row;
 
-  background-color: #ECECEC;
+  background-color: transparent;
 `
 
 export const Title = styled.Text`
-  color: #8E8E8E;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 30px;
 `
