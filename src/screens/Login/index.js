@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, Image } from 'react-native';
+import { StyleSheet, Text, Image, Alert } from 'react-native';
 import { Input, Button } from 'native-base';
 import {
   Wrapper,
@@ -25,11 +25,9 @@ export default function Login({ navigation }) {
     setIsLoading(true);
     const auth = getAuth();
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then(() => {
-        Alert.alert("Conta", "Cadastrado com sucesso!");
-      })
-      .catch((error) => {
-        console.log(error);
+      .then()
+      .catch(() => {
+        Alert.alert("Login", "Ocorreu um erro")
       })
       .finally(() => setIsLoading(false));
   }
