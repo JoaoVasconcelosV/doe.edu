@@ -5,7 +5,8 @@ import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import db from '../../Config/firebase'
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from '../../Config/firebase'
 
 import Header from '../../Components/Header';
 import { 
@@ -25,10 +26,37 @@ export default function Register({ navigation }) {
   const [image, setImage] = useState(null);
   const { control, handleSubmit } = useForm();
   async function onSubmit(datas) {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", image, true);
+      xhr.send(null);
+    });
+    const fileRef = ref(storage, "teste/teste.jpg");
+    uploadBytes(fileRef, blob).then((snapshot) => {
+      console.warn('Uploaded a blob or file!');
+    });
+
+    blob.close();
+
+    const result = await getDownloadURL(fileRef)
+
     const uid = getAuth().currentUser.uid;
-    const data = {id: uid, ...datas};
+    const data = {id: uid, image: result, ...datas};
+    
+    createRequisition(data);
+  };
+
+  async function createRequisition(data) {
     setIsLoading(true);
-    await addDoc(collection(db, "campaigns"), {image: image, ...data})
+    await addDoc(collection(db, "campaigns"), data)
       .then(() => {
         Alert.alert("Campanha", "Cadastrada com sucesso!");
       })
@@ -39,7 +67,7 @@ export default function Register({ navigation }) {
         setIsLoading(false);        
       });
     navigation.navigate('Register');
-  };
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -62,13 +90,20 @@ export default function Register({ navigation }) {
         <Text onPress={() =>navigation.goBack()}>
           {"<Voltar"}
         </Text>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Button onPress={pickImage} style={{ backgroundColor: "#22B07E" }}>
-            <Text style={{ color: "#fff" }}>
-              Selecione uma imagem
-            </Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center', margin: 20 }}>
+          <Button onPress={pickImage} style={{ backgroundColor: "#22B07E", marginBottom: 20}}>
+            {!image 
+              ?          
+              <Text style={{ color: "#fff" }}>
+                Selecione uma imagem
+              </Text>
+              :
+              <Text style={{ color: "#fff" }}>
+                Altere a imagem
+              </Text>
+            }
           </Button>
-          {image && <Image source={{ uri: image }} style={{ width: 300, height: 200 }} />}
+          {image && <Image source={{ uri: image }} style={{ width: 300, height: 200, borderRadius: 10 }} />}
         </View>
         <Text style={{ fontSize: 18, marginTop: 20, marginBottom: 20 }}>Vamos 
           <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text> 

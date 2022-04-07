@@ -3,7 +3,7 @@ import { Text, StatusBar, StyleSheet, ScrollView } from 'react-native';
 import { Button, Input } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { collection, onSnapshot } from "firebase/firestore";
-import db from '../../Config/firebase'
+import { db } from '../../Config/firebase'
 
 import { AntDesign } from '@expo/vector-icons'; 
 import Header from '../../Components/Header'
@@ -65,7 +65,7 @@ export default function Home({ navigation }) {
           ?
             <ScrollView style={{ marginBottom: 20 }}>
               {campaigns.map(((campaign, index) =>
-                <Card key={index} image={"https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"} title={campaign.title} description={campaign.description} />
+                <Card key={index} image={campaign.image} title={campaign.title} description={campaign.description} />
               ))}
             </ScrollView>
           :

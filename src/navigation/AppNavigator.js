@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getAuth } from "firebase/auth";
 
 //START FIREBASE
-import db from '../Config/firebase'
+import { db } from '../Config/firebase'
 
 //AuthRoutes
 import LoginScreen from '../screens/Login'
