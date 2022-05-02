@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, StatusBar, Alert, StyleSheet, View, Image } from 'react-native';
+import { Text, StatusBar, Alert, StyleSheet, View, Image, ScrollView } from 'react-native';
 import { Button, Input, TextArea } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
@@ -86,64 +86,66 @@ export default function Register({ navigation }) {
     <Wrapper>
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
       <Header font="#fff" sair={() => logout()} />
-      <Container>      
-        <Text onPress={() =>navigation.goBack()}>
-          {"<Voltar"}
-        </Text>
-        <View style={{ alignItems: 'center', justifyContent: 'center', margin: 20 }}>
-          <Button onPress={pickImage} style={{ backgroundColor: "#22B07E", marginBottom: 20}}>
-            {!image 
-              ?          
-              <Text style={{ color: "#fff" }}>
-                Selecione uma imagem
-              </Text>
-              :
-              <Text style={{ color: "#fff" }}>
-                Altere a imagem
-              </Text>
-            }
-          </Button>
-          {image && <Image source={{ uri: image }} style={{ width: 300, height: 200, borderRadius: 10 }} />}
-        </View>
-        <Text style={{ fontSize: 18, marginTop: 20, marginBottom: 20 }}>Vamos 
-          <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text> 
-          sua campanha
-        </Text>
-        <Text style={{ fontSize: 18 }}>Titulo</Text>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur } }) => (
-            <Input
-              onBlur={onBlur}              
-              onChangeText={value => onChange(value)}
-              w="100%"
-            />
-          )}
-          name="title"
-          rules={{ required: true }}
-        />
-        <Text style={{ fontSize: 18 }}>Descrição</Text>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur } }) => (
-            <TextArea
-              onBlur={onBlur}              
-              onChangeText={value => onChange(value)}
-              w="100%"
-            />
-          )}
-          name="description"
-        />
-        <Button
-          borderRadius="15"
-          style={styles.button}
-          isLoading={isLoading}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={{ color: "white", fontSize: 22 }}>
-            Cadastrar
+      <Container behavior="height" keyboardVerticalOffset={30}>
+        <ScrollView style={{ paddingHorizontal: "10%", paddingVertical: "5%"}}>
+          <Text onPress={() => navigation.goBack()}>
+            {"<Voltar"}
           </Text>
-        </Button>
+          <View style={{ alignItems: 'center', justifyContent: 'center', margin: 20 }}>
+            <Button onPress={pickImage} style={{ backgroundColor: "#22B07E", marginBottom: 20 }}>
+              {!image
+                ?
+                <Text style={{ color: "#fff" }}>
+                  Selecione uma imagem
+                </Text>
+                :
+                <Text style={{ color: "#fff" }}>
+                  Altere a imagem
+                </Text>
+              }
+            </Button>
+            {image && <Image source={{ uri: image }} style={{ width: 300, height: 200, borderRadius: 10 }} />}
+          </View>
+          <Text style={{ fontSize: 18, marginTop: 20, marginBottom: 20 }}>Vamos
+            <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text>
+            sua campanha
+          </Text>
+          <Text style={{ fontSize: 18 }}>Titulo</Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur } }) => (
+              <Input
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                w="100%"
+              />
+            )}
+            name="title"
+            rules={{ required: true }}
+          />
+          <Text style={{ fontSize: 18 }}>Descrição</Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur } }) => (
+              <TextArea
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                w="100%"
+              />
+            )}
+            name="description"
+          />
+          <Button
+            borderRadius="15"
+            style={styles.button}
+            isLoading={isLoading}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <Text style={{ color: "white", fontSize: 22 }}>
+              Cadastrar
+            </Text>
+          </Button>
+        </ScrollView>
       </Container>
     </Wrapper>
   )
