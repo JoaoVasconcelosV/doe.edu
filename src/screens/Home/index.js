@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StatusBar, StyleSheet, ScrollView } from 'react-native';
+import { Text, StatusBar, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { Button, Input } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { collection, onSnapshot } from "firebase/firestore";
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
 })
 
 export default function Home({ navigation }) {
-  const [campaigns, setCampaigns] = useState([]);
+  const [campaigns, setCampaigns] = useState(null);
+  const [docs, setDocs] = useState([]);
   const { control, handleSubmit } = useForm();
   const onSubmit = data => login(data);
 
@@ -35,10 +36,10 @@ export default function Home({ navigation }) {
     onSnapshot(col, (querySnapshot) => {
       const camp = [];
       querySnapshot.forEach((doc) => {
-        if(doc)           
-          camp.push(doc.data());
+        if(doc)                
+          camp.push({ docId: doc.id, ...doc.data() });
       });
-      setCampaigns(camp);
+      setCampaigns(camp);      
     });       
   }, [])
 
@@ -61,17 +62,20 @@ export default function Home({ navigation }) {
           name="search"
           rules={{ required: true }}
         />
-        {campaigns.length 
+        {campaigns
           ?
-            <ScrollView style={{ marginBottom: 20 }}>
-              {campaigns.map(((campaign, index) =>
-                <Card key={index} image={campaign.image} title={campaign.title} description={campaign.description} />
-              ))}
-            </ScrollView>
-          :
-            <NoCampaign>
-              <Text style={{ color: "#8E8E8E", fontSize: 20 }}>Sem campanhas ativas no momento</Text>
-            </NoCampaign>
+            campaigns.length 
+            ?
+              <ScrollView style={{ marginBottom: 20 }}>
+                {campaigns.map(((campaign, index) =>
+                  <Card onPress={() => navigation.navigate('Info', { id: campaign.docId })} key={index} image={campaign.image} title={campaign.title} description={campaign.description} />
+                ))}
+              </ScrollView>
+            : 
+              <NoCampaign>
+                <Text style={{ color: "#8E8E8E", fontSize: 20 }}>Sem campanhas ativas no momento</Text>
+              </NoCampaign>
+          : <ActivityIndicator size="large" color="#22B07E" style={{ flex: 1 }} />
         }
       </Container>
       <Button

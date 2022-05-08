@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import { Box, AspectRatio, Image, Stack, Heading } from 'native-base'
 
 export default function Card(props) {
   return (
-    <Box alignItems="center" style={{ marginTop: 15 }}>
+    <TouchableOpacity onPress={props.onPress} style={{ marginTop: 15, alignItems: 'center'}}>
       <Box maxW="80" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
         borderColor: "coolGray.600",
         backgroundColor: "gray.700"
@@ -32,6 +32,6 @@ export default function Card(props) {
           </Text>
         </Stack>
       </Box>
-    </Box>
+    </TouchableOpacity>
   )
 }

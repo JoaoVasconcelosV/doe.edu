@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 export default function Register({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
+  const [imageName, setImageName] = useState(null);
   const { control, handleSubmit } = useForm();
   async function onSubmit(datas) {
     const blob = await new Promise((resolve, reject) => {
@@ -39,10 +40,10 @@ export default function Register({ navigation }) {
       xhr.open("GET", image, true);
       xhr.send(null);
     });
-    const fileRef = ref(storage, "teste/teste.jpg");
-    uploadBytes(fileRef, blob).then((snapshot) => {
+    const fileRef = ref(storage, `campaignsImages/${imageName}`);
+    await uploadBytes(fileRef, blob).then((snapshot) => {
       console.warn('Uploaded a blob or file!');
-    });
+    })
 
     blob.close();
 
@@ -71,7 +72,7 @@ export default function Register({ navigation }) {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [16, 9],
       quality: 1,
@@ -79,6 +80,8 @@ export default function Register({ navigation }) {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      const imageNames = result.uri.split('/')[result.uri.split('/').length - 1]
+      setImageName(imageNames);
     }
   };
 
@@ -86,8 +89,8 @@ export default function Register({ navigation }) {
     <Wrapper>
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
       <Header font="#fff" sair={() => logout()} />
-      <Container behavior="height" keyboardVerticalOffset={30}>
-        <ScrollView style={{ paddingHorizontal: "10%", paddingVertical: "5%"}}>
+      <Container behavior="height">
+        <ScrollView style={{ paddingHorizontal: "10%", marginTop: "5%"}}>
           <Text onPress={() => navigation.goBack()}>
             {"<Voltar"}
           </Text>
