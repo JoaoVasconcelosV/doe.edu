@@ -46,7 +46,7 @@ export default function Home({ navigation }) {
   return (
     <Wrapper>
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
-      <Header />
+      <Header font="#000" />
       <Container>
         <Text style={{ color: "#8E8E8E" }}>Buscar campanhas</Text>
         <Controller
