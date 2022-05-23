@@ -15,11 +15,13 @@ import SignupScreen from '../screens/Signup'
 import HomeScreen from '../screens/Home'
 import RegisterScreen from '../screens/Register'
 import InfoScreen from '../screens/Info'
+import CampaignsScreen from '../screens/Campaigns'
+import EditScreen from '../screens/Edit'
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(false);  
 
   useEffect(() => {
     const subscriber = getAuth().onAuthStateChanged(setUser);
@@ -34,9 +36,11 @@ export default function AppNavigator() {
         { user 
         ?
           <>
-            <Stack.Screen name="Home" component={HomeScreen} />          
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />            
             <Stack.Screen name="Info" component={InfoScreen} />
+            <Stack.Screen name="Campaigns" component={CampaignsScreen} />
+            <Stack.Screen name="Edit" component={EditScreen} />
           </>
         : 
           <>

@@ -9,6 +9,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from '../../Config/firebase'
 
 import Header from '../../Components/Header';
+import Error from '../../Components/Error';
 import { 
   Wrapper,
   Container
@@ -25,8 +26,10 @@ export default function Register({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState(null);
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm();
+
   async function onSubmit(datas) {
+    setIsLoading(true);
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -67,7 +70,7 @@ export default function Register({ navigation }) {
       .finally(() => {
         setIsLoading(false);        
       });
-    navigation.navigate('Register');
+    navigation.navigate('Home');
   }
 
   const pickImage = async () => {
@@ -126,6 +129,7 @@ export default function Register({ navigation }) {
             name="title"
             rules={{ required: true }}
           />
+          { errors.title && <Error>Campo obrigatório</Error> }
           <Text style={{ fontSize: 18 }}>Descrição</Text>
           <Controller
             control={control}
@@ -137,7 +141,9 @@ export default function Register({ navigation }) {
               />
             )}
             name="description"
+            rules={{ required: true }}
           />
+          { errors.description && <Error>Campo obrigatório</Error> }
           <Button
             borderRadius="15"
             style={styles.button}

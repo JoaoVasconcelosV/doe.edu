@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, Image, Alert } from 'react-native';
+import { StyleSheet, Text, Image, Alert, View } from 'react-native';
 import { Input, Button } from 'native-base';
 import {
   Wrapper,
@@ -7,6 +7,7 @@ import {
   Subtitle,
   Container
 } from './styles.js'
+import Error from '../../Components/Error';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useForm, Controller } from 'react-hook-form';
 
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 
 export default function Login({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = data => login(data);
 
   function login(data) {
@@ -39,33 +40,37 @@ export default function Login({ navigation }) {
       />
       <Title>Doe.edu</Title>
       <Subtitle>Faça sua doação para ajudar a educação</Subtitle>
-      <Controller 
-        control={control}
-        render={({field: { onChange, onBlur }}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            variant="underlined" 
-            placeholder="Email" w="70%" 
-          />
-        )}
-        name="email"
-        rules={{ required: true }}
-      />
-      <Controller 
-        control={control}
-        render={({field: { onChange, onBlur }}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            variant="underlined"
-            type="password"
-            placeholder="Senha" w="70%" 
-          />
-        )}
-        name="password"
-        rules={{ required: true }}
-      />      
+      <View style={{ width: '70%'}}>
+        <Controller 
+          control={control}
+          render={({field: { onChange, onBlur }}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              variant="underlined" 
+              placeholder="Email" 
+            />
+          )}
+          name="email"
+          rules={{ required: true }}
+        />
+        { errors.email && <Error>Campo obrigatório</Error>}
+        <Controller 
+          control={control}
+          render={({field: { onChange, onBlur }}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              variant="underlined"
+              type="password"
+              placeholder="Senha"
+            />
+          )}
+          name="password"
+          rules={{ required: true }}
+        />
+        { errors.password && <Error>Campo obrigatório</Error>}
+      </View>
       <Container>
         <Button
           isLoading={isLoading}

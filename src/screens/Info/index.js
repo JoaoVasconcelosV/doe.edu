@@ -14,12 +14,11 @@ import {
 } from './styles'
 
 export default function Info({ route, navigation }) {
-  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    (async function teste() {
+    (async function getData() {
       const docRef = doc(db, "campaigns", route.params.id);
       const docSnap = await getDoc(docRef);
 

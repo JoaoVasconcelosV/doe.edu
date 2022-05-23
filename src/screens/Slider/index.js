@@ -89,9 +89,10 @@ export default function SliderScreen({ navigation }) {
             Entrar
           </Text>
         </NativeButton>
+        
         <Text>
-          Não possui conta? 
-          <Text style={loginStyles.link}>Cadastre-se aqui</Text>
+          Não possui conta?          
+          <Text onPress={() => navigation.navigate('Signup')} style={loginStyles.link}>Cadastre-se aqui</Text>
         </Text>
       </View>
     );
