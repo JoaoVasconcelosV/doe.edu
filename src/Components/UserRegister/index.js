@@ -9,7 +9,7 @@ import {
   Container
 } from './styles.js'
 import Error from '../../Components/Error';
-import { getAuth, updateProfile  } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
 
 const styles = StyleSheet.create({
   button: {
@@ -24,7 +24,7 @@ export default function UserRegister({ navigation }) {
 
   function signUp(data) {
     setIsLoading(true);
-    const auth = getAuth();    
+    const auth = getAuth();
     updateProfile (auth.currentUser, {
       displayName: data.name, 
       phoneNumber: data.phone

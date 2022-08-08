@@ -36,8 +36,8 @@ export default function Home({ navigation }) {
   const onSubmit = data => login(data);  
 
   useEffect(() => {
-    const auth = getAuth();
-    setIsFullRegistration(auth.currentUser.phoneNumber ? true : false);
+    const auth = getAuth();    
+    setIsFullRegistration(auth.currentUser.displayName ? true : false);
     const col = collection(db, 'campaigns')
     onSnapshot(col, (querySnapshot) => {
       const camp = [];
@@ -79,7 +79,7 @@ export default function Home({ navigation }) {
                 onBlur={onBlur}
                 variant="rounded"
                 onChangeText={value => onChange(value)}
-                placeholder="Digite sua busca..." w="100%"
+                placeholder="Digite sua busca..." w="100%"                
               />
             )}
             name="search"
