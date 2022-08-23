@@ -71,7 +71,7 @@ export default function Home({ navigation }) {
         <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
         <Header font="#000" />
         <Container>
-          <Text style={{ color: "#8E8E8E" }}>Buscar campanhas</Text>
+          <Text style={{ color: "#8E8E8E", marginBottom: 10 }}>Buscar campanhas</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur } }) => (

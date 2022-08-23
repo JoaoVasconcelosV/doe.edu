@@ -48,6 +48,7 @@ export default function Login({ navigation }) {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               variant="underlined" 
+              isInvalid={errors.email}
               placeholder="Email" 
             />
           )}
@@ -63,6 +64,7 @@ export default function Login({ navigation }) {
               onChangeText={value => onChange(value)}
               variant="underlined"
               type="password"
+              isInvalid={errors.password}
               placeholder="Senha"
             />
           )}
@@ -73,18 +75,18 @@ export default function Login({ navigation }) {
       </View>
       <Container>
         <Button
-          isLoading={isLoading}
-          onPress={handleSubmit(onSubmit)}
-          style={{ ...styles.button, backgroundColor: '#000', marginRight: 5}}
-        >
-          <Text style={{ color: '#fff' }}>Entrar</Text>
-        </Button>
-        <Button 
           variant="outline" 
-          style={{ ...styles.button, borderColor: '#000', marginLeft: 5 }}
+          style={{ ...styles.button, borderColor: '#000', marginRight: 5 }}
           onPress={() => navigation.navigate('Signup')}
         >
           <Text style={{ color: '#000' }}>Cadastrar</Text>
+        </Button>
+        <Button
+          isLoading={isLoading}
+          onPress={handleSubmit(onSubmit)}
+          style={{ ...styles.button, backgroundColor: '#000', marginLeft: 5}}
+        >
+          <Text style={{ color: '#fff' }}>Entrar</Text>
         </Button>
       </Container>
       {/* <Text>Esqueceu a senha?</Text> SE POSSIVEL*/}

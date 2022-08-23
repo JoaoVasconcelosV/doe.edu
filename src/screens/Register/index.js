@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StatusBar, Alert, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Masks, useMaskedInputProps } from 'react-native-mask-input';
 import { Button, Input, TextArea } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
@@ -26,7 +27,7 @@ export default function Register({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState(null);
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, watch, formState: { errors } } = useForm();
 
   async function onSubmit(datas) {
     setIsLoading(true);
@@ -116,13 +117,14 @@ export default function Register({ navigation }) {
             <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text>
             sua campanha
           </Text>
-          <Text style={{ fontSize: 18 }}>Titulo</Text>
+          <Text style={{ fontSize: 18, marginTop: 10 }}>Titulo</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur } }) => (
               <Input
                 onBlur={onBlur}
                 onChangeText={value => onChange(value)}
+                isInvalid={errors.title}
                 w="100%"
               />
             )}
@@ -130,13 +132,14 @@ export default function Register({ navigation }) {
             rules={{ required: true }}
           />
           { errors.title && <Error>Campo obrigatório</Error> }
-          <Text style={{ fontSize: 18 }}>Descrição</Text>
+          <Text style={{ fontSize: 18, marginTop: 10 }}>Descrição</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur } }) => (
               <TextArea
                 onBlur={onBlur}
                 onChangeText={value => onChange(value)}
+                isInvalid={errors.description}
                 w="100%"
               />
             )}
@@ -144,6 +147,31 @@ export default function Register({ navigation }) {
             rules={{ required: true }}
           />
           { errors.description && <Error>Campo obrigatório</Error> }
+          <Text style={{ fontSize: 18, marginTop: 10 }}>Telefone para contato</Text>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur } }) => {
+              
+              const maskedInputProps = useMaskedInputProps({
+                value: watch("phone"),
+                onChangeText: value => onChange(value),    
+                mask: Masks.BRL_PHONE,
+              });
+              
+              return (
+                <Input    
+                  {...maskedInputProps}
+                  onBlur={onBlur}                                
+                  isInvalid={errors.phone}
+                  w="100%"                
+                />
+              )
+            }}
+            name="phone"
+            rules={{ required: true, minLength: 10 }}
+          />
+          { errors.phone?.type === "required" && <Error>Campo obrigatório</Error> }
+          { errors.phone?.type === "minLength" && <Error>Digite o número completo</Error> }
           <Button
             borderRadius="15"
             style={styles.button}

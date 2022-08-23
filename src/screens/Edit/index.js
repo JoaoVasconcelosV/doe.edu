@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StatusBar, Alert, StyleSheet, View, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { Masks, useMaskedInputProps } from 'react-native-mask-input';
 import { Button, Input, TextArea } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
@@ -61,7 +62,7 @@ export default function Edit({ route, navigation }) {
     const docRef = doc(db, "campaigns", route.params.id);
     await updateDoc(docRef, data)
       .then(() => {
-        Alert.alert("Campanha", "Cadastrada com sucesso!");
+        Alert.alert("Campanha", "Editada com sucesso!");
       })
       .catch(() => {
         Alert.alert("Campanha", "Ocorreu um erro durante o cadastro!");
@@ -105,6 +106,7 @@ export default function Edit({ route, navigation }) {
       setImage(data.image);
       setValue('title', data.title);
       setValue('description', data.description);
+      setValue('phone', data.phone);
     }
   }, [data])
 
@@ -138,7 +140,7 @@ export default function Edit({ route, navigation }) {
               <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text>
               sua campanha
             </Text>
-            <Text style={{ fontSize: 18 }}>Titulo</Text>
+            <Text style={{ fontSize: 18, marginTop: 10 }}>Titulo</Text>
             <Controller
               control={control}
               render={({ field: { onChange, onBlur } }) => (
@@ -146,6 +148,7 @@ export default function Edit({ route, navigation }) {
                   onBlur={onBlur}
                   value={watch("title")}
                   onChangeText={value => onChange(value)}
+                  isInvalid={errors.title}
                   w="100%"
                 />
               )}
@@ -153,7 +156,7 @@ export default function Edit({ route, navigation }) {
               rules={{ required: true }}
             />
             { errors.title && <Error>Campo obrigatório</Error> }
-            <Text style={{ fontSize: 18 }}>Descrição</Text>
+            <Text style={{ fontSize: 18, marginTop: 10 }}>Descrição</Text>
             <Controller
               control={control}
               render={({ field: { onChange, onBlur } }) => (
@@ -161,6 +164,7 @@ export default function Edit({ route, navigation }) {
                   onBlur={onBlur}
                   value={watch("description")}
                   onChangeText={value => onChange(value)}
+                  isInvalid={errors.description}
                   w="100%"
                 />
               )}
@@ -168,6 +172,31 @@ export default function Edit({ route, navigation }) {
               rules={{ required: true }}
             />
             { errors.description && <Error>Campo obrigatório</Error> }
+            <Text style={{ fontSize: 18, marginTop: 10 }}>Telefone para contato</Text>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur } }) => {
+                
+                const maskedInputProps = useMaskedInputProps({
+                  value: watch("phone"),
+                  onChangeText: value => onChange(value),    
+                  mask: Masks.BRL_PHONE,
+                });
+                
+                return (
+                  <Input    
+                    {...maskedInputProps}
+                    onBlur={onBlur}                                
+                    isInvalid={errors.phone}
+                    w="100%"                
+                  />
+                )
+              }}
+              name="phone"
+              rules={{ required: true, minLength: 14 }}
+            />
+            { errors.phone?.type === "required" && <Error>Campo obrigatório</Error> }
+            { errors.phone?.type === "minLength" && <Error>Digite o número completo</Error> }
             <Button
               borderRadius="15"
               style={styles.button}
@@ -175,7 +204,7 @@ export default function Edit({ route, navigation }) {
               onPress={handleSubmit(onSubmit)}
             >
               <Text style={{ color: "white", fontSize: 22 }}>
-                Cadastrar
+                Editar
               </Text>
             </Button>
           </ScrollView>

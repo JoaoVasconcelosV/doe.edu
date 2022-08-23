@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StatusBar, View, Image, ActivityIndicator } from 'react-native'
+import { Text, StatusBar, View, Image, ActivityIndicator, Linking, TouchableOpacity  } from 'react-native'
 
 import { doc, getDoc } from "firebase/firestore";
 import { db } from '../../Config/firebase'
@@ -30,6 +30,20 @@ export default function Info({ route, navigation }) {
     })()
   }, [])
 
+  function linkWhatsApp() {    
+    Linking.openURL(
+      `whatsapp://send?phone=55${data.phone}&text=Gostaria de ajudar sua campanha no Doe.edu`
+    );
+  }
+
+  function linkEmail() {
+    Linking.openURL('mailto:joaoyama2018@gmail.com')
+  }
+
+  function linkPhone() {
+    Linking.openURL(`tel:${data.phone}`)
+  }  
+
   return (
     <Wrapper>
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
@@ -45,11 +59,17 @@ export default function Info({ route, navigation }) {
                 <Image source={{ uri: data?.image }} style={{ width: 300, height: 200, borderRadius: 10 }} />
                 <Title>{data?.title}</Title>
                 <Description>{data?.description}</Description>
-                <ShareTitle>Entre em contato e ajude</ShareTitle>
+                <ShareTitle>Entre em contato e ajude</ShareTitle>                
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '60%', marginTop: 5 }}>
-                  <Image source={require('../../../assets/whats.png')} />
-                  <Image source={require('../../../assets/gmail.png')} />
-                  <Image source={require('../../../assets/phone.png')} />
+                  <TouchableOpacity onPress={linkWhatsApp}>
+                    <Image source={require('../../../assets/whats.png')} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={linkEmail}>
+                    <Image source={require('../../../assets/gmail.png')} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={linkPhone}>
+                    <Image source={require('../../../assets/phone.png')} />
+                  </TouchableOpacity>                  
                 </View>
               </View>
             : <ActivityIndicator size="large" color="#22B07E" style={{ flex: 1 }} />

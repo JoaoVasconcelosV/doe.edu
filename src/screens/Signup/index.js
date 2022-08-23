@@ -49,7 +49,8 @@ export default function Signup({ navigation }) {
           <Input
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
-            variant="underlined" 
+            variant="underlined"
+            isInvalid={errors.email}
             placeholder="Email"
           />
         )}
@@ -62,7 +63,8 @@ export default function Signup({ navigation }) {
         render={({field: { onChange, onBlur }}) => (            
           <Input 
             onChangeText={value => onChange(value)}
-            variant="underlined" 
+            variant="underlined"
+            isInvalid={errors.password}
             placeholder="Senha"
           />
         )}
