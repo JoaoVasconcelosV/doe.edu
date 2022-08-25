@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, Button, Image, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, Text, Button, Image, StyleSheet, AsyncStorage } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Button as NativeButton } from 'native-base';
 
@@ -72,7 +72,21 @@ export default function SliderScreen({ navigation }) {
         <Text style={styles.text}>{item.text}</Text>
       </View>
     )
-  }  
+  }
+
+  async function getFirstAccess() {
+    const isFirst = await AsyncStorage.getItem("isFirstAccess");
+    setShowApp(isFirst ? true : false); 
+  }
+
+  useEffect(() => {
+    getFirstAccess();
+  }, [])
+  
+  async function setFirstAccess() {
+    await AsyncStorage.setItem("isFirstAccess", "false");
+    setShowApp(true)
+  }
 
   if(showApp) {
     return (
@@ -103,7 +117,7 @@ export default function SliderScreen({ navigation }) {
       renderItem={RenderItem} 
       data={slides}        
       showNextButton={false}
-      renderDoneButton={() => <Button color="#22B07E" onPress={() => setShowApp(true)} title='Concluir'/>}    
+      renderDoneButton={() => <Button color="#22B07E" onPress={setFirstAccess} title='Concluir'/>}    
       dotStyle={{ backgroundColor: '#C4C4C4' }} 
       activeDotStyle={{ backgroundColor: '#22B07E' }}
     />

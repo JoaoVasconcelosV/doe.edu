@@ -30,7 +30,7 @@ export default function Info({ route, navigation }) {
     })()
   }, [])
 
-  function linkWhatsApp() {    
+  function linkWhatsApp() {
     Linking.openURL(
       `whatsapp://send?phone=55${data.phone}&text=Gostaria de ajudar sua campanha no Doe.edu`
     );
@@ -61,15 +61,19 @@ export default function Info({ route, navigation }) {
                 <Description>{data?.description}</Description>
                 <ShareTitle>Entre em contato e ajude</ShareTitle>                
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '60%', marginTop: 5 }}>
+                  {data.phone && (
                   <TouchableOpacity onPress={linkWhatsApp}>
                     <Image source={require('../../../assets/whats.png')} />
                   </TouchableOpacity>
+                  )}
                   <TouchableOpacity onPress={linkEmail}>
                     <Image source={require('../../../assets/gmail.png')} />
                   </TouchableOpacity>
+                  {data.phone && (
                   <TouchableOpacity onPress={linkPhone}>
                     <Image source={require('../../../assets/phone.png')} />
-                  </TouchableOpacity>                  
+                  </TouchableOpacity> 
+                  )}                 
                 </View>
               </View>
             : <ActivityIndicator size="large" color="#22B07E" style={{ flex: 1 }} />
