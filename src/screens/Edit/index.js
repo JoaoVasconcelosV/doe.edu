@@ -31,34 +31,39 @@ export default function Edit({ route, navigation }) {
   const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm();
 
   async function onSubmit(datas) {
-    setIsLoading(true);
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        console.log(e);
-        reject(new TypeError("Network request failed"));
-      };
-      xhr.responseType = "blob";
-      xhr.open("GET", image, true);
-      xhr.send(null);
-    });
-    const fileRef = ref(storage, `campaignsImages/${imageName}`);
-    await uploadBytes(fileRef, blob).then()
+    let dataReq;
+    setIsLoading(true);    
+    if(image !== data.image) {
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", image, true);
+        xhr.send(null);
+      });
+      const fileRef = ref(storage, `campaignsImages/${imageName}`);
+      await uploadBytes(fileRef, blob).then()    
 
-    blob.close();
+      blob.close();    
 
-    const result = await getDownloadURL(fileRef)
+      const result = await getDownloadURL(fileRef)
+      dataReq = {id: uid, image: result, ...datas};
+    }
 
     const uid = getAuth().currentUser.uid;
-    const data = {id: uid, image: result, ...datas};
+    if(image === data.image)
+      dataReq = {id: uid, ...datas};
     
-    createRequisition(data);
+    createRequisition(dataReq);
   };
 
-  async function createRequisition(data) {
+  async function createRequisition(data) {  
     const docRef = doc(db, "campaigns", route.params.id);
     await updateDoc(docRef, data)
       .then(() => {

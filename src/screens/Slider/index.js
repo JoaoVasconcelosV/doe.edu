@@ -105,7 +105,7 @@ export default function SliderScreen({ navigation }) {
         </NativeButton>
         
         <Text>
-          Não possui conta?          
+          {"Não possui conta? "}          
           <Text onPress={() => navigation.navigate('Signup')} style={loginStyles.link}>Cadastre-se aqui</Text>
         </Text>
       </View>
