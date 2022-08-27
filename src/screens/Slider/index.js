@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Button, Image, StyleSheet, AsyncStorage } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Button as NativeButton } from 'native-base';
 
@@ -17,7 +18,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',    
   },
   title: {
-    fontSize: 48,
     fontWeight: 'bold',
     color: '#22B07E',
     textAlign: 'center',
@@ -33,7 +33,6 @@ const loginStyles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 14,
   },
   button: {
     backgroundColor: "#22B07E",
@@ -68,8 +67,8 @@ export default function SliderScreen({ navigation }) {
     return (
       <View style={styles.slide}>
         <Image source={item.image} style={styles.image} />
-        <Text style={styles.title}>doe.edu</Text>
-        <Text style={styles.text}>{item.text}</Text>
+        <Text style={{...styles.title, fontSize: EStyleSheet.value('3rem')}}>doe.edu</Text>
+        <Text style={{...styles.text, fontSize: EStyleSheet.value('1rem')}}>{item.text}</Text>
       </View>
     )
   }
@@ -99,7 +98,7 @@ export default function SliderScreen({ navigation }) {
           borderRadius="50"
           onPress={() => navigation.navigate('Login')}
         >
-          <Text style={loginStyles.text}>
+          <Text style={{...loginStyles.text, fontSize: EStyleSheet.value('0.875rem')}}>
             Entrar
           </Text>
         </NativeButton>

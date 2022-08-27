@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
+import EStyleSheet from "react-native-extended-stylesheet";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from '../../Config/firebase'
 
@@ -113,11 +114,11 @@ export default function Register({ navigation }) {
             </Button>
             {image && <Image source={{ uri: image }} style={{ width: 300, height: 200, borderRadius: 10 }} />}
           </View>
-          <Text style={{ fontSize: 18, marginTop: 20, marginBottom: 20 }}>Vamos
+          <Text style={{ fontSize: EStyleSheet.value('1.125rem'), marginTop: 20, marginBottom: 20 }}>Vamos
             <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text>
             sua campanha
           </Text>
-          <Text style={{ fontSize: 18, marginTop: 10 }}>Titulo</Text>
+          <Text style={{ fontSize: EStyleSheet.value('1.125rem'), marginTop: 10 }}>Titulo</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur } }) => (
@@ -132,7 +133,7 @@ export default function Register({ navigation }) {
             rules={{ required: true }}
           />
           { errors.title && <Error>Campo obrigatório</Error> }
-          <Text style={{ fontSize: 18, marginTop: 10 }}>Descrição</Text>
+          <Text style={{ fontSize: EStyleSheet.value('1.125rem'), marginTop: 10 }}>Descrição</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur } }) => (
@@ -147,7 +148,7 @@ export default function Register({ navigation }) {
             rules={{ required: true }}
           />
           { errors.description && <Error>Campo obrigatório</Error> }
-          <Text style={{ fontSize: 18, marginTop: 10 }}>Telefone para contato</Text>
+          <Text style={{ fontSize: EStyleSheet.value('1.125rem'), marginTop: 10 }}>Telefone para contato</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur } }) => {
@@ -178,7 +179,7 @@ export default function Register({ navigation }) {
             isLoading={isLoading}
             onPress={handleSubmit(onSubmit)}
           >
-            <Text style={{ color: "white", fontSize: 22 }}>
+            <Text style={{ color: "white", fontSize: EStyleSheet.value('1.375rem') }}>
               Cadastrar
             </Text>
           </Button>

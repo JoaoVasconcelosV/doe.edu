@@ -4,6 +4,7 @@ import { Button, Input } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { collection, onSnapshot } from "firebase/firestore";
 import { getAuth } from 'firebase/auth'
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { db } from '../../Config/firebase'
 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -95,7 +96,7 @@ export default function Home({ navigation }) {
                 </ScrollView>
               : 
                 <NoCampaign>
-                  <Text style={{ color: "#8E8E8E", fontSize: 20 }}>Sem campanhas ativas no momento</Text>
+                  <Text style={{ color: "#8E8E8E", fontSize: EStyleSheet.value('1.25rem') }}>Sem campanhas ativas no momento</Text>
                 </NoCampaign>
             : <ActivityIndicator size="large" color="#22B07E" style={{ flex: 1 }} />
           }
