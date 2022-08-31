@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Button, Image, StyleSheet, AsyncStorage } from 'react-native';
+import { View, Text, Button, Image, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Button as NativeButton } from 'native-base';
