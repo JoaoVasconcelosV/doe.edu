@@ -71,7 +71,7 @@ export default function Edit({ route, navigation }) {
         Alert.alert("Campanha", "Editada com sucesso!");
       })
       .catch(() => {
-        Alert.alert("Campanha", "Ocorreu um erro durante o cadastro!");
+        Alert.alert("Campanha", "Ocorreu um erro durante a edição!");
       })
       .finally(() => {
         setIsLoading(false);        

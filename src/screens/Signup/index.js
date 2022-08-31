@@ -29,8 +29,8 @@ export default function Signup({ navigation }) {
       .then(() => {
         Alert.alert("Conta", "Cadastrado com sucesso!");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        Alert.alert("Conta", "Ocorreu um erro ao fazer seu cadastro!")
       })
       .finally(() => setIsLoading(false));
   }
