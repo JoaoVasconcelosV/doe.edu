@@ -8,6 +8,7 @@ import { getAuth } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { db, storage } from '../../Config/firebase'
 
 import Header from '../../Components/Header';
@@ -108,8 +109,9 @@ export default function Register({ navigation }) {
       <Header font="#fff" sair={() => logout()} />
       <Container behavior="height">
         <ScrollView style={{ paddingHorizontal: "10%", marginTop: "5%"}}>
-          <Text onPress={() => navigation.goBack()}>
-            {"<Voltar"}
+          <Text onPress={() => navigation.goBack()} style={{ fontSize: EStyleSheet.value('1.125rem') }}>
+            <Ionicons name="chevron-back" size={EStyleSheet.value('1.125rem')} color="black" />
+            Voltar
           </Text>
           <View style={{ alignItems: 'center', justifyContent: 'center', margin: 20 }}>
             <Button onPress={pickImage} style={{ backgroundColor: "#22B07E", marginBottom: 20 }}>

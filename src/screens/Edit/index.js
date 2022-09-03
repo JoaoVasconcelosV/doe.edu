@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import Ionicons from '@expo/vector-icons/Ionicons'
 import EStyleSheet from "react-native-extended-stylesheet";
 import { ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import { db, storage } from '../../Config/firebase'
@@ -174,8 +175,9 @@ export default function Edit({ route, navigation }) {
         {data 
         ?
           <ScrollView style={{ paddingHorizontal: "10%", marginTop: "5%"}}>
-            <Text onPress={() => navigation.goBack()}>
-              {"<Voltar"}
+            <Text style={{ fontSize: EStyleSheet.value('1.125rem') }} onPress={() => navigation.goBack()}>
+              <Ionicons name="chevron-back" size={EStyleSheet.value('1.125rem')} color="black" />
+              Voltar
             </Text>
             <View style={{ alignItems: 'center', justifyContent: 'center', margin: 20 }}>
               <Button onPress={pickImage} style={{ backgroundColor: "#22B07E", marginBottom: 20 }}>

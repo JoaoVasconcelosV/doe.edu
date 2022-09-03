@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StatusBar, View, Image, ActivityIndicator, Linking, TouchableOpacity  } from 'react-native'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import EStyleSheet from "react-native-extended-stylesheet";
 
 import { doc, getDoc } from "firebase/firestore";
 import { db } from '../../Config/firebase'
@@ -49,8 +51,9 @@ export default function Info({ route, navigation }) {
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
       <Header font="#fff" sair={() => logout()} />
       <Container>
-        <Text onPress={() => navigation.goBack()}>
-          {"<Voltar"}
+        <Text onPress={() => navigation.goBack()} style={{ fontSize: EStyleSheet.value('1.125rem') }}>
+          <Ionicons name="chevron-back" size={EStyleSheet.value('1.125rem')} color="black" />
+          Voltar
         </Text>
         {
           data

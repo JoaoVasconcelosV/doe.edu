@@ -69,7 +69,7 @@ export default function Home({ navigation }) {
           render={({ field: { onChange, onBlur } }) => (
             <Input
               onBlur={onBlur}
-              variant="rounded"
+              variant="rounded"                          
               onChangeText={value => onChange(value)}
               placeholder="Digite sua busca..." w="100%"
             />

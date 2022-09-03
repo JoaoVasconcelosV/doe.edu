@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StatusBar, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { Button, Input } from 'native-base';
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { useForm, Controller } from 'react-hook-form';
 import { getAuth } from "firebase/auth";
 import EStyleSheet from "react-native-extended-stylesheet";
@@ -49,9 +50,10 @@ export default function Campaigns({ navigation }) {
     <Wrapper>
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
       <Header font="#000" />
-      <Container>
-        <Text style={{ marginVertical: 10 }} onPress={() => navigation.goBack()}>
-          {"<Voltar"}
+      <Container>                
+        <Text style={{ marginVertical: 10, fontSize: EStyleSheet.value('1.125rem') }} onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back" size={EStyleSheet.value('1.125rem')} color="black" />
+          Voltar
         </Text>
         <Text style={{ color: "#8E8E8E" }}>Minhas campanhas</Text>        
         {campaigns
