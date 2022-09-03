@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, Image, Alert, View } from 'react-native';
-import { Input, Button } from 'native-base';
+import { StyleSheet, Text, Image, View } from 'react-native';
+import { Input, Button, useToast } from 'native-base';
+import toastAlert from '../../utils/Toast';
 import {
   Wrapper,
   Title,
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
 export default function Login({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm();
+  const toast = useToast();
   const onSubmit = data => login(data);
 
   function login(data) {
@@ -28,7 +30,12 @@ export default function Login({ navigation }) {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then()
       .catch(() => {
-        Alert.alert("Login", "Ocorreu um erro")
+        toastAlert(
+          "Login",
+          "Ocorreu um erro!",
+          "error",
+          toast
+        );
       })
       .finally(() => setIsLoading(false));
   }

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, Image, Alert, View } from 'react-native';
-import { Input, Button } from 'native-base';
+import React, { useState } from 'react'
+import { StyleSheet, Text, Image, View } from 'react-native';
+import { Input, Button, useToast } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
+import toastAlert from '../../utils/Toast';
 import {
   Wrapper,
   Title,
@@ -9,6 +10,7 @@ import {
   Container
 } from './styles.js'
 import Error from '../../Components/Error';
+import { RegisterMessages } from "../../utils/MessageErros";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const styles = StyleSheet.create({
@@ -20,6 +22,7 @@ const styles = StyleSheet.create({
 export default function Signup({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm();
+  const toast = useToast();
   const onSubmit = data => signUp(data);
 
   function signUp(data) {
@@ -27,10 +30,20 @@ export default function Signup({ navigation }) {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
-        Alert.alert("Conta", "Cadastrado com sucesso!");
+        toastAlert(
+          "Registro",
+          "Cadastrado com sucesso!",
+          "success",
+          toast
+        );        
       })
-      .catch(() => {
-        Alert.alert("Conta", "Ocorreu um erro ao fazer seu cadastro!")
+      .catch((error) => {
+        toastAlert(
+          "Registro",          
+          RegisterMessages(error),
+          "error",
+          toast
+        );                
       })
       .finally(() => setIsLoading(false));
   }

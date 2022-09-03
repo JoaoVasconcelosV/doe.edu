@@ -3,14 +3,12 @@ import { Text, StatusBar, StyleSheet, ScrollView, ActivityIndicator } from 'reac
 import { Button, Input } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { collection, onSnapshot } from "firebase/firestore";
-import { getAuth } from 'firebase/auth'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { db } from '../../Config/firebase'
 
 import { AntDesign } from '@expo/vector-icons'; 
 import Header from '../../Components/Header'
 import Card from '../../Components/Card'
-import UserRegister from '../../Components/UserRegister'
 import {
   Wrapper,
   Container,
@@ -30,15 +28,10 @@ const styles = StyleSheet.create({
 
 export default function Home({ navigation }) {
   const [allCampaigns, setAllCampaigns] = useState(null);
-  const [campaigns, setCampaigns] = useState(null);
-  const [isFullRegistration, setIsFullRegistration] = useState(false);
-  const [docs, setDocs] = useState([]);
-  const { control, handleSubmit, watch } = useForm();
-  const onSubmit = data => login(data);  
+  const [campaigns, setCampaigns] = useState(null);    
+  const { control, watch } = useForm();  
 
-  useEffect(() => {
-    const auth = getAuth();    
-    setIsFullRegistration(auth.currentUser.displayName ? true : false);
+  useEffect(() => {           
     const col = collection(db, 'campaigns')
     onSnapshot(col, (querySnapshot) => {
       const camp = [];
@@ -66,52 +59,48 @@ export default function Home({ navigation }) {
   }, [watch("search")])
 
   return (
-    isFullRegistration
-    ?    
-      <Wrapper>
-        <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
-        <Header font="#000" />
-        <Container>
-          <Text style={{ color: "#8E8E8E", marginBottom: 10 }}>Buscar campanhas</Text>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur } }) => (
-              <Input
-                onBlur={onBlur}
-                variant="rounded"
-                onChangeText={value => onChange(value)}
-                placeholder="Digite sua busca..." w="100%"                
-              />
-            )}
-            name="search"
-          />
-          {campaigns
+    <Wrapper>
+      <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
+      <Header font="#000" />
+      <Container>
+        <Text style={{ color: "#8E8E8E", marginBottom: 10 }}>Buscar campanhas</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur } }) => (
+            <Input
+              onBlur={onBlur}
+              variant="rounded"
+              onChangeText={value => onChange(value)}
+              placeholder="Digite sua busca..." w="100%"
+            />
+          )}
+          name="search"
+        />
+        {campaigns
+          ?
+          campaigns.length
             ?
-              campaigns.length 
-              ?
-                <ScrollView style={{ marginBottom: 20 }}>
-                  {campaigns.map(((campaign, index) =>
-                    <Card onPress={() => navigation.navigate('Info', { id: campaign.docId })} key={index} image={campaign.image} title={campaign.title} description={campaign.description} />
-                  ))}
-                </ScrollView>
-              : 
-                <NoCampaign>
-                  <Text style={{ color: "#8E8E8E", fontSize: EStyleSheet.value('1.25rem') }}>Sem campanhas ativas no momento</Text>
-                </NoCampaign>
-            : <ActivityIndicator size="large" color="#22B07E" style={{ flex: 1 }} />
-          }
-        </Container>
-        <Button
-          borderRadius="15"
-          style={styles.button}
-          onPress={() => navigation.navigate('Register')}
-        >
-          <Text style={{ color: "white" }}>
-            <AntDesign name="plus" size={24} color="white" />
-          </Text>
-        </Button>
-      </Wrapper>
-    :
-      <UserRegister />
+            <ScrollView style={{ marginBottom: 20 }}>
+              {campaigns.map(((campaign, index) =>
+                <Card onPress={() => navigation.navigate('Info', { id: campaign.docId })} key={index} image={campaign.image} title={campaign.title} description={campaign.description} />
+              ))}
+            </ScrollView>
+            :
+            <NoCampaign>
+              <Text style={{ color: "#8E8E8E", fontSize: EStyleSheet.value('1.25rem') }}>Sem campanhas ativas no momento</Text>
+            </NoCampaign>
+          : <ActivityIndicator size="large" color="#22B07E" style={{ flex: 1 }} />
+        }
+      </Container>
+      <Button
+        borderRadius="15"
+        style={styles.button}
+        onPress={() => navigation.navigate('Register')}
+      >
+        <Text style={{ color: "white" }}>
+          <AntDesign name="plus" size={24} color="white" />
+        </Text>
+      </Button>
+    </Wrapper>
   );
 }

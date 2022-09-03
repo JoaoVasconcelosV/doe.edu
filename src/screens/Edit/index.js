@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StatusBar, Alert, StyleSheet, View, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, StatusBar, StyleSheet, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { Masks, useMaskedInputProps } from 'react-native-mask-input';
-import { Button, Input, TextArea } from 'native-base';
+import { Button, Input, TextArea, useToast } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth } from "firebase/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import EStyleSheet from "react-native-extended-stylesheet";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import { db, storage } from '../../Config/firebase'
 
 import Header from '../../Components/Header';
 import Error from '../../Components/Error';
+import toastAlert from '../../utils/Toast';
 import { 
   Wrapper,
   Container
@@ -20,21 +21,37 @@ import {
 const styles = StyleSheet.create({
   button: {    
     backgroundColor: "#22B07E",
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 10
   }
 })
 
 export default function Edit({ route, navigation }) {
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ isLoadingDelete, setIsLoadingDelete ] = useState(false);
   const [ image, setImage ] = useState(null);
   const [ imageName, setImageName ] = useState(null);
   const [ data, setData ] = useState(null);
   const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm();
 
+  const toast = useToast();
+
   async function onSubmit(datas) {
+    const uid = getAuth().currentUser.uid;
     let dataReq;
     setIsLoading(true);    
     if(image !== data.image) {
+      const fileRemoveRef = ref(storage, data.image);
+      deleteObject(fileRemoveRef).then()
+        .catch(() => {
+          toastAlert(
+            "Imagem",
+            "Ocorreu um erro, tente novamente!",
+            "error",
+            toast
+          )        
+        });
+
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.onload = function () {
@@ -56,27 +73,60 @@ export default function Edit({ route, navigation }) {
       const result = await getDownloadURL(fileRef)
       dataReq = {id: uid, image: result, ...datas};
     }
-
-    const uid = getAuth().currentUser.uid;
+    
     if(image === data.image)
       dataReq = {id: uid, ...datas};
     
     createRequisition(dataReq);
   };
 
-  async function createRequisition(data) {  
+  async function createRequisition(data) {     
     const docRef = doc(db, "campaigns", route.params.id);
     await updateDoc(docRef, data)
       .then(() => {
-        Alert.alert("Campanha", "Editada com sucesso!");
+        toastAlert(
+          "Campanha",
+          "Editada com sucesso!",
+          "success",
+          toast
+        )
+        navigation.navigate('Campaigns');         
       })
       .catch(() => {
-        Alert.alert("Campanha", "Ocorreu um erro durante a edição!");
+        toastAlert(
+          "Campanha",
+          "Ocorreu um erro durante a edição!",
+          "error",
+          toast
+        )        
       })
       .finally(() => {
         setIsLoading(false);        
-      });
-    navigation.navigate('Campaigns');
+      });    
+  }  
+
+  async function deleteCampaign() {        
+    const docRef = doc(db, "campaigns", route.params.id);
+    setIsLoadingDelete(true);
+    await deleteDoc(docRef)
+      .then(() => {
+        toastAlert(
+          "Campanha", 
+          "Encerrada com sucesso!", 
+          "success", 
+          toast
+        );
+        navigation.navigate('Campaigns');
+      })
+      .catch(() => {
+        toastAlert(
+          "Campanha", 
+          "Ocorreu um erro ao encerrar campanha!",
+          "error", 
+          toast
+        );        
+      })
+      .finally(() => setIsLoadingDelete(false));    
   }
 
   const pickImage = async () => {
@@ -211,6 +261,17 @@ export default function Edit({ route, navigation }) {
             >
               <Text style={{ color: "white", fontSize: EStyleSheet.value('1.375rem') }}>
                 Editar
+              </Text>
+            </Button>
+            
+            <Button
+              borderRadius="15"
+              style={{...styles.button, backgroundColor: "red", marginTop: 0}}
+              isLoading={isLoadingDelete}
+              onPress={deleteCampaign}
+            >
+              <Text style={{ color: "white", fontSize: EStyleSheet.value('1.375rem') }}>
+                Finalizar campanha
               </Text>
             </Button>
           </ScrollView>

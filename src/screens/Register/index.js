@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text, StatusBar, Alert, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Text, StatusBar, StyleSheet, View, Image, ScrollView } from 'react-native';
 import { Masks, useMaskedInputProps } from 'react-native-mask-input';
-import { Button, Input, TextArea } from 'native-base';
+import { Button, Input, TextArea, useToast } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 import { getAuth } from "firebase/auth";
@@ -12,6 +12,7 @@ import { db, storage } from '../../Config/firebase'
 
 import Header from '../../Components/Header';
 import Error from '../../Components/Error';
+import toastAlert from '../../utils/Toast'
 import { 
   Wrapper,
   Container
@@ -28,6 +29,7 @@ export default function Register({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState(null);
+  const toast = useToast();
   const { control, handleSubmit, watch, formState: { errors } } = useForm();
 
   async function onSubmit(datas) {
@@ -64,10 +66,20 @@ export default function Register({ navigation }) {
     setIsLoading(true);
     await addDoc(collection(db, "campaigns"), data)
       .then(() => {
-        Alert.alert("Campanha", "Cadastrada com sucesso!");
+        toastAlert(
+          "Campanha",
+          "Cadastrada com sucesso!",
+          "success",
+          toast
+        );        
       })
       .catch(() => {
-        Alert.alert("Campanha", "Ocorreu um erro durante o cadastro!");
+        toastAlert(
+          "Campanha",
+          "Ocorreu um erro durante o cadastro!",
+          "error",
+          toast
+        );        
       })
       .finally(() => {
         setIsLoading(false);        
