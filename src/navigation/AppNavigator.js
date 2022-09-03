@@ -10,6 +10,7 @@ import { db } from '../Config/firebase'
 import LoginScreen from '../screens/Login'
 import SliderScreen from '../screens/Slider'
 import SignupScreen from '../screens/Signup'
+import ForgotScreen from '../screens/Forgot'
 
 //protectedRoutes
 import HomeScreen from '../screens/Home'
@@ -46,7 +47,8 @@ export default function AppNavigator() {
           <>
             <Stack.Screen name="Home" component={SliderScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Signup" component={SignupScreen} />        
+            <Stack.Screen name="Signup" component={SignupScreen} /> 
+            <Stack.Screen name="Forgot" component={ForgotScreen} />        
           </>
         }
       </Stack.Navigator>

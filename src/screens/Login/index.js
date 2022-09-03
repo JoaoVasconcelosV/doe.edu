@@ -11,6 +11,7 @@ import {
 import Error from '../../Components/Error';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useForm, Controller } from 'react-hook-form';
+import { LoginMessages } from "../../utils/MessageErros";
 
 const styles = StyleSheet.create({
   button: {
@@ -29,10 +30,10 @@ export default function Login({ navigation }) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then()
-      .catch(() => {
+      .catch((error) => {
         toastAlert(
           "Login",
-          "Ocorreu um erro!",
+          LoginMessages(error),
           "error",
           toast
         );
@@ -96,7 +97,11 @@ export default function Login({ navigation }) {
           <Text style={{ color: '#fff' }}>Entrar</Text>
         </Button>
       </Container>
-      {/* <Text>Esqueceu a senha?</Text> SE POSSIVEL*/}
+      <Text
+        onPress={() => navigation.navigate('Forgot')}
+      >
+        Esqueceu a senha?
+      </Text>
     </Wrapper>
   )
 }
