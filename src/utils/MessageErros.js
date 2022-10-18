@@ -1,5 +1,5 @@
 export function RegisterMessages(error) {
-  switch(error.code) {
+  switch (error.code) {
     case "auth/email-already-in-use":
       return "E-mail em uso!";
     case "auth/invalid-email":
@@ -7,10 +7,10 @@ export function RegisterMessages(error) {
     default:
       return "Ocorreu um erro ao fazer seu cadastro!";
   }
-};
+}
 
 export function LoginMessages(error) {
-  switch(error.code) {
+  switch (error.code) {
     case "auth/wrong-password":
       return "Senha incorreta!";
     case "auth/user-not-found":
@@ -18,10 +18,10 @@ export function LoginMessages(error) {
     default:
       return "Ocorreu um erro ao fazer login!";
   }
-};
+}
 
 export function ForgotMessages(error) {
-  switch(error.code) {
+  switch (error.code) {
     case "auth/invalid-email":
       return "E-mail invalido!";
     case "auth/user-not-found":
@@ -29,4 +29,4 @@ export function ForgotMessages(error) {
     default:
       return "Ocorreu um erro ao fazer login!";
   }
-};
+}

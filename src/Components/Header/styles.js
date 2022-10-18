@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Wrapper = styled.View`
   margin: 10px 0;
@@ -10,9 +10,9 @@ export const Wrapper = styled.View`
   flex-direction: row;
 
   background-color: transparent;
-`
+`;
 
 export const Title = styled.Text`
   font-weight: bold;
   font-size: 30px;
-`
+`;
