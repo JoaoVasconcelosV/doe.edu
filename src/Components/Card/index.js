@@ -6,8 +6,11 @@ export default function Card(props) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={{ marginTop: 15, alignItems: "center" }}
-    >
+      style={{
+        marginTop: 15,
+        paddingBottom: 20,
+        alignItems: "center",
+      }}>
       <Box
         maxW="80"
         rounded="lg"
@@ -15,17 +18,18 @@ export default function Card(props) {
         borderColor="coolGray.200"
         borderWidth="1"
         _dark={{
+          shadow: 9,
           borderColor: "coolGray.600",
           backgroundColor: "gray.700",
         }}
         _web={{
-          shadow: 2,
+          shadow: 9,
           borderWidth: 0,
         }}
         _light={{
+          shadow: 9,
           backgroundColor: "gray.50",
-        }}
-      >
+        }}>
         <Box>
           <AspectRatio w="100%" ratio={16 / 9}>
             <Image

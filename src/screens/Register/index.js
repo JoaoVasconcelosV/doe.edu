@@ -43,6 +43,10 @@ export default function Register({ navigation }) {
   } = useForm();
 
   async function onSubmit(datas) {
+    if (!image) {
+      return toastAlert("Campanha", "Selecione uma imagem!", "error", toast);
+    }
+
     setIsLoading(true);
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -58,9 +62,7 @@ export default function Register({ navigation }) {
       xhr.send(null);
     });
     const fileRef = ref(storage, `campaignsImages/${imageName}`);
-    await uploadBytes(fileRef, blob).then((snapshot) => {
-      console.warn("Uploaded a blob or file!");
-    });
+    await uploadBytes(fileRef, blob).then();
 
     blob.close();
 
@@ -100,10 +102,10 @@ export default function Register({ navigation }) {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-      const imageNames =
-        result.uri.split("/")[result.uri.split("/").length - 1];
+    if (!result.canceled) {
+      const uri = result.assets[0].uri;
+      setImage(uri);
+      const imageNames = uri.split("/")[uri.split("/").length - 1];
       setImageName(imageNames);
     }
   };
@@ -116,8 +118,7 @@ export default function Register({ navigation }) {
         <ScrollView style={{ paddingHorizontal: "10%", marginTop: "5%" }}>
           <Text
             onPress={() => navigation.goBack()}
-            style={{ fontSize: EStyleSheet.value("1.125rem") }}
-          >
+            style={{ fontSize: EStyleSheet.value("1.125rem") }}>
             <Ionicons
               name="chevron-back"
               size={EStyleSheet.value("1.125rem")}
@@ -130,12 +131,10 @@ export default function Register({ navigation }) {
               alignItems: "center",
               justifyContent: "center",
               margin: 20,
-            }}
-          >
+            }}>
             <Button
               onPress={pickImage}
-              style={{ backgroundColor: "#22B07E", marginBottom: 20 }}
-            >
+              style={{ backgroundColor: "#22B07E", marginBottom: 20 }}>
               {!image ? (
                 <Text style={{ color: "#fff" }}>Selecione uma imagem</Text>
               ) : (
@@ -154,15 +153,13 @@ export default function Register({ navigation }) {
               fontSize: EStyleSheet.value("1.125rem"),
               marginTop: 20,
               marginBottom: 20,
-            }}
-          >
+            }}>
             Vamos
             <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text>
             sua campanha
           </Text>
           <Text
-            style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}
-          >
+            style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}>
             Titulo
           </Text>
           <Controller
@@ -180,8 +177,7 @@ export default function Register({ navigation }) {
           />
           {errors.title && <Error>Campo obrigatório</Error>}
           <Text
-            style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}
-          >
+            style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}>
             Descrição
           </Text>
           <Controller
@@ -199,8 +195,7 @@ export default function Register({ navigation }) {
           />
           {errors.description && <Error>Campo obrigatório</Error>}
           <Text
-            style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}
-          >
+            style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}>
             Telefone para contato
           </Text>
           <Controller
@@ -234,14 +229,12 @@ export default function Register({ navigation }) {
             borderRadius="15"
             style={styles.button}
             isLoading={isLoading}
-            onPress={handleSubmit(onSubmit)}
-          >
+            onPress={handleSubmit(onSubmit)}>
             <Text
               style={{
                 color: "white",
                 fontSize: EStyleSheet.value("1.375rem"),
-              }}
-            >
+              }}>
               Cadastrar
             </Text>
           </Button>

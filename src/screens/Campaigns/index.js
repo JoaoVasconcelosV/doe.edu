@@ -6,7 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { Button } from "native-base";
+import { Button, useToast } from "native-base";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { getAuth } from "firebase/auth";
 import EStyleSheet from "react-native-extended-stylesheet";
@@ -17,6 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import Header from "../../Components/Header";
 import Card from "../../Components/Card";
 import { Wrapper, Container, NoCampaign } from "./styles";
+import toastAlert from "../../utils/Toast";
 
 const styles = StyleSheet.create({
   button: {
@@ -31,8 +32,9 @@ const styles = StyleSheet.create({
 
 export default function Campaigns({ navigation }) {
   const [campaigns, setCampaigns] = useState(null);
-  const [docs, setDocs] = useState([]);
-  const onSubmit = (data) => login(data);
+  const [canRegister, setCanRegister] = useState(false);
+
+  const toast = useToast();
   const uid = getAuth().currentUser.uid;
 
   useEffect(() => {
@@ -46,6 +48,17 @@ export default function Campaigns({ navigation }) {
     });
   }, []);
 
+  useEffect(() => {
+    const col = query(collection(db, "campaigns"), where("id", "==", uid));
+    onSnapshot(col, (querySnapshot) => {
+      const camp = [];
+      querySnapshot.forEach((doc) => {
+        if (doc) camp.push({ docId: doc.id, ...doc.data() });
+      });
+      camp.length > 1 ? setCanRegister(false) : setCanRegister(true);
+    });
+  }, []);
+
   return (
     <Wrapper>
       <StatusBar barStyle="light-content" backgroundColor="#22B07E" />
@@ -56,8 +69,7 @@ export default function Campaigns({ navigation }) {
             marginVertical: 10,
             fontSize: EStyleSheet.value("1.125rem"),
           }}
-          onPress={() => navigation.goBack()}
-        >
+          onPress={() => navigation.goBack()}>
           <Ionicons
             name="chevron-back"
             size={EStyleSheet.value("1.125rem")}
@@ -87,8 +99,7 @@ export default function Campaigns({ navigation }) {
                 style={{
                   color: "#8E8E8E",
                   fontSize: EStyleSheet.value("1.25rem"),
-                }}
-              >
+                }}>
                 Sem campanhas ativas no momento
               </Text>
             </NoCampaign>
@@ -100,8 +111,15 @@ export default function Campaigns({ navigation }) {
       <Button
         borderRadius="15"
         style={styles.button}
-        onPress={() => navigation.navigate("Register")}
-      >
+        onPress={() => {
+          if (canRegister) return navigation.navigate("Register");
+          toastAlert(
+            "Campanhas",
+            "Você alcançou o limite de campanhas cadastras, finalize uma campanha para iniciar outra!",
+            "error",
+            toast
+          );
+        }}>
         <Text style={{ color: "white" }}>
           <AntDesign name="plus" size={24} color="white" />
         </Text>

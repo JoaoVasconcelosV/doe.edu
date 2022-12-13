@@ -39,7 +39,7 @@ export default function Signup({ navigation }) {
 
   return (
     <Wrapper>
-      <Image source={require("../../../assets/logoIFCE.png")} />
+      <Image source={require("../../../assets/logoDoe.png")} />
       <Title>Doe.edu</Title>
       <Subtitle>Faça seu cadastro para adicionar sua necessidade</Subtitle>
       <View style={{ width: "70%" }}>
@@ -77,8 +77,7 @@ export default function Signup({ navigation }) {
         <Button
           variant="outline"
           style={{ ...styles.button, borderColor: "#000", marginRight: 5 }}
-          onPress={() => navigation.navigate("Login")}
-        >
+          onPress={() => navigation.navigate("Login")}>
           <Text style={{ color: "#000" }}>Entrar</Text>
         </Button>
         <Button
@@ -88,8 +87,7 @@ export default function Signup({ navigation }) {
             ...styles.button,
             backgroundColor: "#000000",
             marginLeft: 5,
-          }}
-        >
+          }}>
           <Text style={{ color: "#fff" }}>Cadastrar</Text>
         </Button>
       </Container>

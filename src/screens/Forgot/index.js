@@ -45,7 +45,7 @@ export default function Forgot({ navigation }) {
 
   return (
     <Wrapper>
-      <Image source={require("../../../assets/logoIFCE.png")} />
+      <Image source={require("../../../assets/logoDoe.png")} />
       <Title>Doe.edu</Title>
       <Subtitle>Altere sua senha</Subtitle>
       <View style={{ width: "70%" }}>
@@ -73,15 +73,13 @@ export default function Forgot({ navigation }) {
           width: "70%",
           marginBottom: 10,
           marginTop: 20,
-        }}
-      >
+        }}>
         <Text style={{ color: "#fff" }}>Enviar email</Text>
       </Button>
       <Button
         variant="outline"
         style={{ borderColor: "#000", width: "70%" }}
-        onPress={() => navigation.navigate("Login")}
-      >
+        onPress={() => navigation.navigate("Login")}>
         <Text style={{ color: "#000" }}>Entrar</Text>
       </Button>
     </Wrapper>

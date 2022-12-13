@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
 
   return (
     <Wrapper>
-      <Image source={require("../../../assets/logoIFCE.png")} />
+      <Image source={require("../../../assets/logoDoe.png")} />
       <Title>Doe.edu</Title>
       <Subtitle>Faça sua doação para ajudar a educação</Subtitle>
       <View style={{ width: "70%" }}>
@@ -77,15 +77,13 @@ export default function Login({ navigation }) {
         <Button
           variant="outline"
           style={{ ...styles.button, borderColor: "#000", marginRight: 5 }}
-          onPress={() => navigation.navigate("Signup")}
-        >
+          onPress={() => navigation.navigate("Signup")}>
           <Text style={{ color: "#000" }}>Cadastrar</Text>
         </Button>
         <Button
           isLoading={isLoading}
           onPress={handleSubmit(onSubmit)}
-          style={{ ...styles.button, backgroundColor: "#000", marginLeft: 5 }}
-        >
+          style={{ ...styles.button, backgroundColor: "#000", marginLeft: 5 }}>
           <Text style={{ color: "#fff" }}>Entrar</Text>
         </Button>
       </Container>

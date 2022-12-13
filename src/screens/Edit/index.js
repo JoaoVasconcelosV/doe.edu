@@ -144,10 +144,10 @@ export default function Edit({ route, navigation }) {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-      const imageNames =
-        result.uri.split("/")[result.uri.split("/").length - 1];
+    if (!result.canceled) {
+      const uri = result.assets[0].uri;
+      setImage(uri);
+      const imageNames = uri.split("/")[uri.split("/").length - 1];
       setImageName(imageNames);
     }
   };
@@ -183,8 +183,7 @@ export default function Edit({ route, navigation }) {
           <ScrollView style={{ paddingHorizontal: "10%", marginTop: "5%" }}>
             <Text
               style={{ fontSize: EStyleSheet.value("1.125rem") }}
-              onPress={() => navigation.goBack()}
-            >
+              onPress={() => navigation.goBack()}>
               <Ionicons
                 name="chevron-back"
                 size={EStyleSheet.value("1.125rem")}
@@ -197,12 +196,10 @@ export default function Edit({ route, navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
                 margin: 20,
-              }}
-            >
+              }}>
               <Button
                 onPress={pickImage}
-                style={{ backgroundColor: "#22B07E", marginBottom: 20 }}
-              >
+                style={{ backgroundColor: "#22B07E", marginBottom: 20 }}>
                 {!image ? (
                   <Text style={{ color: "#fff" }}>Selecione uma imagem</Text>
                 ) : (
@@ -221,15 +218,16 @@ export default function Edit({ route, navigation }) {
                 fontSize: EStyleSheet.value("1.125rem"),
                 marginTop: 20,
                 marginBottom: 20,
-              }}
-            >
+              }}>
               Vamos
               <Text style={{ fontWeight: "bold" }}>{" cadastrar "}</Text>
               sua campanha
             </Text>
             <Text
-              style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}
-            >
+              style={{
+                fontSize: EStyleSheet.value("1.125rem"),
+                marginTop: 10,
+              }}>
               Titulo
             </Text>
             <Controller
@@ -248,8 +246,10 @@ export default function Edit({ route, navigation }) {
             />
             {errors.title && <Error>Campo obrigatório</Error>}
             <Text
-              style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}
-            >
+              style={{
+                fontSize: EStyleSheet.value("1.125rem"),
+                marginTop: 10,
+              }}>
               Descrição
             </Text>
             <Controller
@@ -268,8 +268,10 @@ export default function Edit({ route, navigation }) {
             />
             {errors.description && <Error>Campo obrigatório</Error>}
             <Text
-              style={{ fontSize: EStyleSheet.value("1.125rem"), marginTop: 10 }}
-            >
+              style={{
+                fontSize: EStyleSheet.value("1.125rem"),
+                marginTop: 10,
+              }}>
               Telefone para contato
             </Text>
             <Controller
@@ -303,14 +305,12 @@ export default function Edit({ route, navigation }) {
               borderRadius="15"
               style={styles.button}
               isLoading={isLoading}
-              onPress={handleSubmit(onSubmit)}
-            >
+              onPress={handleSubmit(onSubmit)}>
               <Text
                 style={{
                   color: "white",
                   fontSize: EStyleSheet.value("1.375rem"),
-                }}
-              >
+                }}>
                 Editar
               </Text>
             </Button>
@@ -319,14 +319,12 @@ export default function Edit({ route, navigation }) {
               borderRadius="15"
               style={{ ...styles.button, backgroundColor: "red", marginTop: 0 }}
               isLoading={isLoadingDelete}
-              onPress={deleteCampaign}
-            >
+              onPress={deleteCampaign}>
               <Text
                 style={{
                   color: "white",
                   fontSize: EStyleSheet.value("1.375rem"),
-                }}
-              >
+                }}>
                 Finalizar campanha
               </Text>
             </Button>

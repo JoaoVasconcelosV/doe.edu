@@ -6,9 +6,11 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { Button, Input } from "native-base";
+import { Button, Input, useToast } from "native-base";
 import { useForm, Controller } from "react-hook-form";
-import { collection, onSnapshot } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import toastAlert from "../../utils/Toast";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { db } from "../../Config/firebase";
 
@@ -31,7 +33,12 @@ const styles = StyleSheet.create({
 export default function Home({ navigation }) {
   const [allCampaigns, setAllCampaigns] = useState(null);
   const [campaigns, setCampaigns] = useState(null);
+  const [canRegister, setCanRegister] = useState(false);
+
   const { control, watch } = useForm();
+
+  const toast = useToast();
+  const uid = getAuth().currentUser.uid;
 
   useEffect(() => {
     const col = collection(db, "campaigns");
@@ -42,6 +49,17 @@ export default function Home({ navigation }) {
       });
       setCampaigns(camp);
       setAllCampaigns(camp);
+    });
+  }, []);
+
+  useEffect(() => {
+    const col = query(collection(db, "campaigns"), where("id", "==", uid));
+    onSnapshot(col, (querySnapshot) => {
+      const camp = [];
+      querySnapshot.forEach((doc) => {
+        if (doc) camp.push({ docId: doc.id, ...doc.data() });
+      });
+      camp.length > 1 ? setCanRegister(false) : setCanRegister(true);
     });
   }, []);
 
@@ -103,8 +121,7 @@ export default function Home({ navigation }) {
                 style={{
                   color: "#8E8E8E",
                   fontSize: EStyleSheet.value("1.25rem"),
-                }}
-              >
+                }}>
                 Sem campanhas ativas no momento
               </Text>
             </NoCampaign>
@@ -116,8 +133,15 @@ export default function Home({ navigation }) {
       <Button
         borderRadius="15"
         style={styles.button}
-        onPress={() => navigation.navigate("Register")}
-      >
+        onPress={() => {
+          if (canRegister) return navigation.navigate("Register");
+          toastAlert(
+            "Campanhas",
+            "Você alcançou o limite de campanhas cadastras, finalize uma campanha para iniciar outra!",
+            "error",
+            toast
+          );
+        }}>
         <Text style={{ color: "white" }}>
           <AntDesign name="plus" size={24} color="white" />
         </Text>
